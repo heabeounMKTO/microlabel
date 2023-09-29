@@ -1,6 +1,5 @@
 use eframe::egui;
 
-
 struct DaApp {
     name: String,
     version: f32
@@ -17,12 +16,21 @@ impl Default for DaApp {
 
 impl eframe::App for DaApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::CentralPanel::default().show(ctx, |ui| {
-            ui.heading("mircolabel");
+        egui::Window::new("Da Image in Question").show(ctx, |ui| {
+            ui.image(egui::include_image!("/home/hbpopos/Downloads/gd.jpg"));
         });
-        egui::SidePanel::left("Da Toolbar").show(ctx, |toolbar| {
-            toolbar.button("rect1")
+        egui::Window::new("Da Toolbar").show(ctx, |toolbar| {
+            let draw_rect = toolbar.button("Draw Rect");
+            let draw_pts = toolbar.button("Draw Point");
+            let next_img = toolbar.button("Next Image");
+            let prev_img = toolbar.button("Previous Image");
+            
         });
+
+        egui::Window::new("Da Info Panel").show(ctx, |ui| {
+            ui.label("there is nothig here!");
+        });
+
 
     }
 }
@@ -34,6 +42,8 @@ fn main() -> Result<(), eframe::Error> {
         ..Default::default()
     };
     eframe::run_native("microlabel", options, Box::new(|cc| {
+        egui_extras::install_image_loaders(&cc.egui_ctx);
         Box::<DaApp>::default()
+
     }))
 }
